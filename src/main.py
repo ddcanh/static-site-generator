@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 from generate_pages_recursive import generate_pages_recursive
 
 def prepare_target_dir(dir_path):
@@ -24,11 +25,17 @@ def copy_all_files(src, dst):
       copy_all_files(src_dir, dst_dir)
 
 
-
 def main():
-  prepare_target_dir("./public")
-  copy_all_files("./static", "./public")
-  generate_pages_recursive("./content", "./template.html", "./public")
+
+  dst_dir = "./docs"
+
+  base_path = '/'
+  if len(sys.argv) > 1:
+    base_path = sys.argv[1]
+
+  prepare_target_dir(dst_dir)
+  copy_all_files("./static", dst_dir)
+  generate_pages_recursive("./content", "./template.html", dst_dir, base_path)
 
 if __name__ == "__main__":
   main()
